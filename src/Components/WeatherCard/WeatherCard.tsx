@@ -1,6 +1,7 @@
 
 import { FC } from 'react'
 import styled, { css } from 'styled-components'
+import {InjectableCss, StyledWrapper} from '../Common/StyledWrapper'
 
 
 export interface CardProps {
@@ -31,13 +32,41 @@ color: #fff;
         margin-left: 0;
     }
 `
+interface WeatherCardStyles {
+    cardHeading: InjectableCss;
+    imageContainer: InjectableCss;
+    weatherWrapper: InjectableCss;
+}
 
-const CardHeading = styled.div`
-`
+const styles: WeatherCardStyles = {
+    cardHeading: {css:''},
+    imageContainer: {
+        css:`
+            position: relative;
+        `,},
+    weatherWrapper: {
+        css:`
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 1em;
 
-const ImageContainer = styled.div`
-    position: relative;
-`
+            ::before {
+                content: '';
+                position: absolute;
+                width: 80%;
+                height: 1px;
+                right: 0;
+                background-color: #fff;
+            }
+
+            div {
+                display: flex;
+                flex-direction: column;
+                width: 30%;
+            }
+        `,},
+}
 
 const WeatherType = styled.p`   
     position: absolute;
@@ -48,27 +77,7 @@ const WeatherType = styled.p`
     transform: rotate(90deg);
 `
 
-const WeatherWrapper = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 1em;
 
-    ::before {
-        content: '';
-        position: absolute;
-        width: 80%;
-        height: 1px;
-        right: 0;
-        background-color: #fff;
-    }
-
-    div {
-        display: flex;
-        flex-direction: column;
-        width: 30%;
-    }
-`
 
 const Degree = styled.span`
     width: 100%;
@@ -79,35 +88,23 @@ const Degree = styled.span`
 const WeatherCard: FC<CardProps> = (props) => {
 
     const Card = styled.div`
-        ${baseCardStyles()}
-
-        ${props.type === "sunny" && (css`
-            background-color: #FA9FBD;
-        `
-        )}
-        ${props.type === "cloudy" && (css`
-            background-color: #31A752;
-        `
-        )}
-        ${props.type === "rainy" && (css`
-            background-color: #0F63FF;
-        `
-        )}
+        ${baseCardStyles()};
+        background-color: ${x => x.theme.design.weatherCard.background[props.type]};
     `
     return (
             <Card>
-                <CardHeading>
+                <StyledWrapper {...styles.cardHeading}>
                     <p>{props.date}</p>
                     <p>{props.location}</p>
-                </CardHeading>
+                </StyledWrapper>
                 <img src={`/images/${props.type}.png`} alt="rain illustration"/>
                 <WeatherType>{props.type}</WeatherType>
-                <WeatherWrapper>
+                <StyledWrapper {...styles.weatherWrapper}>
                     <Degree>{props.temp.degree}°</Degree>
                     <div><span>Hum.</span><span>{props.temp.humidity}</span></div>
                     <div><span>Prec.</span><span>{props.temp.precipitation}</span></div>
                     <div><span>Fore.</span><span>{props.temp.forecast}</span></div>
-                </WeatherWrapper>
+                </StyledWrapper>
             </Card>
     )
 }

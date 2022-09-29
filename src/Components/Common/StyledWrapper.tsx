@@ -1,27 +1,24 @@
 // ---- TODO make the styledWrapper Components worked
 
-// import { Children, FC } from "react";
-// import styled, { CSSProperties, Interpolation } from "styled-components";
+import { Children, FC } from "react";
+import styled, { CSSProperties, Interpolation } from "styled-components";
 
-// type OwnProps = {
-//     injectableCss: InjectableCss
-// }
+// type Ownprops = InjectableCss extends ReactNode?;
 
-// export interface InjectableCss {
-//     css: Interpolation<CSSProperties>;
-//   }
+export interface InjectableCss {
+    css: Interpolation<CSSProperties>;
+  }
 
-// export const StyledWrapper: FC<OwnProps> = (props, {injectableCss}) => {
-//     const Div =  styled.div`
-//         ${injectableCss.css}
-//     `;
+export const StyledWrapper: FC<InjectableCss> = ({css}) => {
+    const Div =  styled.div`
+        ${css}
+    `;
 
-//     return (
-//         <Div>
-//             {Children}
-//         </Div>
-//     );
+    return (
+        <Div>
+            {Children}
+        </Div>
+    );
 
-// } 
-export const notWorking = "this is not working"
+} 
     
